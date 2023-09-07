@@ -64,7 +64,7 @@ public class TodosTest {
     }
 
     @Test
-    public void shouldSearchQuery() {
+    public void shouldSearchQueryForThreeTasks () {
         SimpleTask simpleTask1 = new SimpleTask(5, "Приложение 3й версии");
         SimpleTask simpleTask2 = new SimpleTask(6, "Приложение 4й версии");
 
@@ -90,4 +90,55 @@ public class TodosTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldSearchQueryForOneTask () {
+        SimpleTask simpleTask1 = new SimpleTask(5, "Приложение 3й версии");
+        SimpleTask simpleTask2 = new SimpleTask(6, "Приложение 4й версии");
+
+        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask1);
+        todos.add(simpleTask2);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {epic};
+        Task[] actual = todos.search("Молоко");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchQueryForZeroTasks () {
+        SimpleTask simpleTask = new SimpleTask(5, "Приложение 3й версии");
+
+        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = new Task[0];
+        Task[] actual = todos.search("Яблоки");
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
